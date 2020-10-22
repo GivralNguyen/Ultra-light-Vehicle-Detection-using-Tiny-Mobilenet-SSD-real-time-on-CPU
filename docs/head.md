@@ -57,7 +57,7 @@ Anchor boxes: ./model/config/mb_ssd_lite_f38_config.py and ./module/ssd.py
 * Optimizer: SGD, with weight decay: 5e-4, batch size: 32, Number of echop:150
 * Data augmentation:
 ```
-python train.py
+python train.py, type_network 'mb2-ssd-lite_f38'
 ```
 # Testing
 ```

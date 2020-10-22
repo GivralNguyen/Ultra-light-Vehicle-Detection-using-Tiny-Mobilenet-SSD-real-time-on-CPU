@@ -55,6 +55,7 @@ Anchor boxes: ./model/config/rfb_tiny_mb_ssd_config.py and ./model/rfb_tiny_mb_s
 * pandas
 
 # Training
+
 * Optimizer: SGD, with weight decay: 5e-4, batch size: 32, Number of echop:
 * Training with batch size: 32
 * Data augmentation:
