@@ -1,0 +1,6 @@
+/media/ducanh/DATA/tienln/data/human/use/wider_person/annotations+/media/ducanh/DATA/tienln/data/human/use/wider_person/images
+/media/ducanh/DATA/tienln/data/human/use/crowd_human/origin_annotations/train+/media/ducanh/DATA/tienln/data/human/use/crowd_human/images
+/media/ducanh/DATA/tienln/data/MSCOCO/2017/annotations/train+/media/ducanh/DATA/tienln/data/MSCOCO/2017/train2017
+/media/ducanh/DATA/tienln/data/VOC2012/person_json_annotations+/media/ducanh/DATA/tienln/data/VOC2012/JPEGImages
+/media/ducanh/DATA/tienln/data/human/No/cityperson/cityperson/cleaned_json_annotations+/media/ducanh/DATA/tienln/data/human/No/cityperson/cityperson/images
+/media/ducanh/DATA/tienln/data/human/No/ECP/ecp/json_annotations+/media/ducanh/DATA/tienln/data/human/No/ECP/ecp/images
