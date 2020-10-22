@@ -1,4 +1,2 @@
-# Test
-
-* image dir path to test:
-* 
+# README
+* This project  implement the head detection model and human detection. More detail about each model can be read at [head detection](http://192.168.0.232:8929/tienln4/ai_camera_detector/-/blob/master/docs/head.md) and [person detection](http://192.168.0.232:8929/tienln4/ai_camera_detector/-/blob/master/docs/person.md)
