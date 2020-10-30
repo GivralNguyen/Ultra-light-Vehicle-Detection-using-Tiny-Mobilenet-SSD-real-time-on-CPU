@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/media/ducanh/DATA/tienln/ai_camera/detector/')
+sys.path.append('/media/ducanh/DATA/tienln/ai_camera/ai_camera_detector/')
 from utils.misc import str2bool, Timer, freeze_net_layers, store_labels
 from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR
 import os
@@ -64,7 +64,7 @@ class Train():
         return net, criterion, optimizer, scheduler, train_loader, val_loader
 
     def training (self):
-        print(self.device)
+        print(self.dir_path)
         for epoch in range(0, self.args.num_epochs):
             self.scheduler.step()
             training_loss = train(self.train_loader, self.net, self.criterion, self.optimizer, device=self.device, debug_steps=self.args.debug_steps, epoch=epoch)

@@ -84,7 +84,7 @@ def test(loader, net, criterion, device):
 
 def data_loader(config):
     train_transform = TrainAugmentation(config.image_size, config.image_mean, config.image_std)
-    target_transform = MatchPrior(config.priors, config.center_variance,config.size_variance, 0.6)
+    target_transform = MatchPrior(config.priors, config.center_variance,config.size_variance, config.iou_threshold)
     test_transform = TestTransform(config.image_size, config.image_mean, config.image_std)
 
     logging.info("Prepare training datasets.")
@@ -92,17 +92,17 @@ def data_loader(config):
     Data_Valid = []
     datasets = []
 
-    path_dataset = open("/media/ducanh/DATA/tienln/ai_camera/detector/datasets/train_dataset.txt", "r")
+    path_dataset = open("/media/ducanh/DATA/tienln/ai_camera/ai_camera_detector/datasets/train_dataset.txt", "r")
     for line in path_dataset:
         data = line.split('+')
         Data_Train.append([data[0],data[1][:-1]])
     
     # training datasets
-    dataset_paths = [Data_Train[0],Data_Train[1],Data_Train[2],Data_Train[3],Data_Train[4],Data_Train[5]]
-    # dataset_paths = [Data_Train[3]]
+    # dataset_paths = [Data_Train[0],Data_Train[1],Data_Train[2],Data_Train[3],Data_Train[4],Data_Train[5]]
+    dataset_paths = [Data_Train[3]]
     for dataset_path in dataset_paths:
         print(dataset_path)
-        dataset = _DataLoader(dataset_path, transform=test_transform,target_transform=target_transform)
+        dataset = _DataLoader(dataset_path, transform=train_transform,target_transform=target_transform)
         print(len(dataset.ids))
         datasets.append(dataset)
         num_classes = len(dataset.class_names)
@@ -112,7 +112,7 @@ def data_loader(config):
 
     if args.valid:
         # Validation datasets
-        path_dataset = open("/media/ducanh/DATA/tienln/ai_camera/detector/datasets/valid_dataset.txt", "r")
+        path_dataset = open("/media/ducanh/DATA/tienln/ai_camera/ai_camera_detector/datasets/valid_dataset.txt", "r")
         for line in path_dataset:
             data = line.split('+')
             Data_Valid.append([data[0],data[1][:-1]])

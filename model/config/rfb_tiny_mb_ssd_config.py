@@ -4,7 +4,7 @@ import torch
 image_size = [320, 240]
 image_mean_test = image_mean = np.array([127, 127, 127])
 image_std = 128.0
-iou_threshold = 0.6
+iou_threshold = 0.3
 center_variance = 0.1
 size_variance = 0.2
 
@@ -38,7 +38,7 @@ def generate_priors(size):
                             w,
                             h*ratio
                         ])
-    print("priors nums:{}".format(len(priors)))
+    # print("priors nums:{}".format(len(priors)))
     priors = torch.tensor(priors)
     torch.clamp(priors, 0.0, 1.0, out=priors)
     return priors

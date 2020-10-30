@@ -20,17 +20,17 @@ def SeperableConv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=
     )
 
 def create_mb_ssd_lite_f38_person(num_classes, width_mult=1.0, use_batch_norm=True, onnx_compatible=False, is_test=False):
-    anchors = [6,6,6,6]
+    anchors = [6,6,6,6,6,6,6]
     base_net = MobileNetV2(width_mult=width_mult, use_batch_norm=use_batch_norm,
                            onnx_compatible=onnx_compatible).features
 
-    source_layer_indexes = [GraphPath(7, 'conv', 3),GraphPath(14, 'conv', 3),19,]
+    source_layer_indexes = [GraphPath(7, 'conv', 3),GraphPath(14, 'conv', 3),19]
 
     extras = ModuleList([
         InvertedResidual(1280, 512, stride=2, expand_ratio=0.2),
-        # InvertedResidual(512, 256, stride=2, expand_ratio=0.25),
-        # InvertedResidual(256, 256, stride=2, expand_ratio=0.5),
-        # InvertedResidual(256, 64, stride=2, expand_ratio=0.25)
+        InvertedResidual(512, 256, stride=2, expand_ratio=0.25),
+        InvertedResidual(256, 256, stride=2, expand_ratio=0.5),
+        InvertedResidual(256, 64, stride=2, expand_ratio=0.25)
     ])
 
     regression_headers = ModuleList([
@@ -38,9 +38,9 @@ def create_mb_ssd_lite_f38_person(num_classes, width_mult=1.0, use_batch_norm=Tr
         SeperableConv2d(in_channels=576, out_channels=anchors[1] * 4, kernel_size=3, padding=1, onnx_compatible=False),
         SeperableConv2d(in_channels=1280, out_channels=anchors[2] * 4, kernel_size=3, padding=1, onnx_compatible=False),
         SeperableConv2d(in_channels=512, out_channels=anchors[3] * 4, kernel_size=3, padding=1, onnx_compatible=False),
-        # SeperableConv2d(in_channels=256, out_channels=anchors[3] * 4, kernel_size=3, padding=1, onnx_compatible=False),
-        # SeperableConv2d(in_channels=256, out_channels=anchors[4] * 4, kernel_size=3, padding=1, onnx_compatible=False),
-        # Conv2d(in_channels=64, out_channels=anchors[5] * 4, kernel_size=1),
+        SeperableConv2d(in_channels=256, out_channels=anchors[3] * 4, kernel_size=3, padding=1, onnx_compatible=False),
+        SeperableConv2d(in_channels=256, out_channels=anchors[4] * 4, kernel_size=3, padding=1, onnx_compatible=False),
+        Conv2d(in_channels=64, out_channels=anchors[5] * 4, kernel_size=1),
     ])
 
     classification_headers = ModuleList([
@@ -48,9 +48,9 @@ def create_mb_ssd_lite_f38_person(num_classes, width_mult=1.0, use_batch_norm=Tr
         SeperableConv2d(in_channels=576, out_channels=anchors[1] * num_classes, kernel_size=3, padding=1),
         SeperableConv2d(in_channels=1280, out_channels=anchors[2] * num_classes, kernel_size=3, padding=1),
         SeperableConv2d(in_channels=512, out_channels=anchors[3] * num_classes, kernel_size=3, padding=1),
-        # SeperableConv2d(in_channels=256, out_channels=anchors[3] * num_classes, kernel_size=3, padding=1),
-        # SeperableConv2d(in_channels=256, out_channels=anchors[4] * num_classes, kernel_size=3, padding=1),
-        # Conv2d(in_channels=64, out_channels=anchors[5] * num_classes, kernel_size=1),
+        SeperableConv2d(in_channels=256, out_channels=anchors[3] * num_classes, kernel_size=3, padding=1),
+        SeperableConv2d(in_channels=256, out_channels=anchors[4] * num_classes, kernel_size=3, padding=1),
+        Conv2d(in_channels=64, out_channels=anchors[5] * num_classes, kernel_size=1),
     ])
 
     return SSD(num_classes, base_net, source_layer_indexes,

@@ -74,7 +74,7 @@ def _argument():
     parser.add_argument('--valid', default=True, type=bool,
                         help='valid when training')                   
 
-    parser.add_argument('--checkpoint_folder', default='/media/ducanh/DATA/tienln/ai_camera/detector/weight/training',
+    parser.add_argument('--checkpoint_folder', default='/media/ducanh/DATA/tienln/ai_camera/ai_camera_detector/weight/training',
                         help='Directory for saving checkpoint models')
 
     logging.basicConfig(stream=sys.stdout, level=logging.INFO,

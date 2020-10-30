@@ -73,7 +73,7 @@ class Mb_Tiny_RFB(nn.Module):
 
     def __init__(self, num_classes=2):
         super(Mb_Tiny_RFB, self).__init__()
-        self.base_channel = 32
+        self.base_channel = 64
 
         def conv_bn(inp, oup, stride):
             return nn.Sequential(

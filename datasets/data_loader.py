@@ -36,6 +36,7 @@ class _DataLoader:
         image = self._read_image(image_id)
         if self.transform:
             image, boxes, labels = self.transform(image, boxes, labels)
+            print(image)
         if self.target_transform:
             boxes, labels = self.target_transform(boxes, labels)
         return image, boxes, labels
