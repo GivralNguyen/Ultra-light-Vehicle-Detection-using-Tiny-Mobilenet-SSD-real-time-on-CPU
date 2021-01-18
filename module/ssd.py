@@ -43,6 +43,7 @@ class SSD(nn.Module):
         locations = []
         start_layer_index = 0
         header_index = 0
+        features = []
         for end_layer_index in self.source_layer_indexes:
             if isinstance(end_layer_index, GraphPath):
                 path = end_layer_index
@@ -71,6 +72,7 @@ class SSD(nn.Module):
                 end_layer_index += 1
             start_layer_index = end_layer_index
             confidence, location = self.compute_header(header_index, y)
+            #features[header_index] = y
             header_index += 1
             confidences.append(confidence)
             locations.append(location)

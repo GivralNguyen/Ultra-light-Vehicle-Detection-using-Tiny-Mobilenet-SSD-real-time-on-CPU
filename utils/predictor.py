@@ -6,7 +6,7 @@ from utils import box_processing as box_utils
 from datasets.data_preprocessing import PredictionTransform
 # from ..utils.misc import Timer
 from utils.misc import Timer
-
+import timeit
 
 class Predictor:
     def __init__(self, net, size, mean=0.0, std=1.0, nms_method=None,
@@ -36,9 +36,12 @@ class Predictor:
         images = image.unsqueeze(0)
         images = images.to(self.device)
         with torch.no_grad():
-            self.timer.start()
+            #self.timer.start()
+            #print(images.shape)
+            start = timeit.default_timer()
             scores, boxes = self.net.forward(images)
-            # print("Inference time: ", self.timer.end())
+            stop = timeit.default_timer()
+            print("Inference time: ",stop-start)
         boxes = boxes[0]
         scores = scores[0]
         if not prob_threshold:

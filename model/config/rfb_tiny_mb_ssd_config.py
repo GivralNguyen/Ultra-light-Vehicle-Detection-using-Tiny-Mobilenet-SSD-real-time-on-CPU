@@ -13,7 +13,7 @@ def generate_priors(size):
     priors = []
     min_boxes = [[10, 16, 24], [32, 48], [64, 96], [128, 192, 256]]
     feature_map_list = [[40, 20, 10, 5], [30, 15, 8, 4]]
-    ratios = [1.7, 1.9, 2.1]
+    ratios = [0.5, 1.0, 2.0]
     for i in range(0, len(image_size)):
         item_list = []
         for k in range(0, len(feature_map_list[i])):

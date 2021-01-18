@@ -93,6 +93,7 @@ class FocalLoss(nn.Module):
         mask = pos_cls.unsqueeze(2).expand_as(conf_preds)
         conf_p = conf_preds[mask].view(-1, conf_preds.size(2)).clone()
         p_t_log = -F.cross_entropy(conf_p, conf_targets[pos_cls], reduction='sum')
+        #print(conf_targets[pos_cls])
         p_t = torch.exp(p_t_log)
 
         # This is focal loss presented in the paper eq(5)

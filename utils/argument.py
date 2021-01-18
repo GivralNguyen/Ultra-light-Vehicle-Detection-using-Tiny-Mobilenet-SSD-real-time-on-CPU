@@ -14,7 +14,7 @@ def _argument():
     parser.add_argument('--balance_data', action='store_true',
                         help="Balance training data by down-sampling more frequent labels.")
 
-    parser.add_argument('--net', default="mb2-ssd-lite_f38_person",
+    parser.add_argument('--net', default="rfb_tiny_mb2_ssd",
                         help="It can be mb2-ssd-lite_f19, mb2-ssd-lite_f38,mb2-ssd-lite_f38_person, rfb_tiny_mb2_ssd")
     parser.add_argument('--freeze_base_net', action='store_true',
                         help="Freeze base net layers.")
@@ -33,17 +33,17 @@ def _argument():
                         help='Weight decay for SGD')
     parser.add_argument('--gamma', default=0.1, type=float,
                         help='Gamma update for SGD')
-    parser.add_argument('--base_net_lr', default=None, type=float,
+    parser.add_argument('--base_net_lr', type=float,
                         help='initial learning rate for base net.')
-    parser.add_argument('--extra_layers_lr', default=None, type=float,
+    parser.add_argument('--extra_layers_lr', type=float,
                         help='initial learning rate for the layers not in base net and prediction heads.')
 
 
     # Params for loading pretrained basenet or checkpoints.
     parser.add_argument('--base_net',
                         help='Pretrained base model')
-    parser.add_argument('--pretrained_ssd', help='Pre-trained base model')
-    parser.add_argument('--resume', default=None, type=str,
+    parser.add_argument('--pretrained_ssd' , help='Pre-trained base model')
+    parser.add_argument('--resume', type=str,
                         help='Checkpoint state_dict file to resume training from')
 
     # Scheduler
@@ -59,7 +59,7 @@ def _argument():
                         help='T_max value for Cosine Annealing Scheduler.')
 
     # Train params
-    parser.add_argument('--batch_size', default=32, type=int,
+    parser.add_argument('--batch_size', default=16, type=int,
                         help='Batch size for training')
     parser.add_argument('--num_epochs', default=500, type=int,
                         help='the number epochs')
@@ -74,7 +74,7 @@ def _argument():
     parser.add_argument('--valid', default=True, type=bool,
                         help='valid when training')                   
 
-    parser.add_argument('--checkpoint_folder', default='/media/ducanh/DATA/tienln/ai_camera/ai_camera_detector/weight/training',
+    parser.add_argument('--checkpoint_folder', default='/home/quannm/Documents/code/ai_camera_detector/checkpoint_expand',
                         help='Directory for saving checkpoint models')
 
     logging.basicConfig(stream=sys.stdout, level=logging.INFO,

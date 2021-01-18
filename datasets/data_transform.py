@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import types
 from numpy import random
-
+import sys
 
 def intersect(box_a, box_b):
     max_xy = np.minimum(box_a[:, 2:], box_b[2:])
@@ -34,7 +34,6 @@ def jaccard_numpy(box_a, box_b):
               (box_b[3]-box_b[1]))  # [A,B]
     union = area_a + area_b - inter
     return inter / union  # [A,B]
-
 
 class Compose(object):
     """Composes several augmentations together.
@@ -96,6 +95,15 @@ class ToAbsoluteCoords(object):
 class ToPercentCoords(object):
     def __call__(self, image, boxes=None, labels=None):
         height, width, channels = image.shape
+        #print(boxes)
+        #print('end')
+        """
+        [[292. 382. 292. 382.]
+        [ 67. 157.  67. 157.]
+        [447. 537. 447. 537.]
+        [620. 710. 620. 710.]]
+
+        """
         boxes[:, 0] /= width
         boxes[:, 2] /= width
         boxes[:, 1] /= height
@@ -103,7 +111,100 @@ class ToPercentCoords(object):
 
         return image, boxes, labels
 
+class PaddingBox(object):
+    def _init_(self, ratio = 0.75):
+        self.ratio = ratio
+    def __call__(self,image, boxes = None, labels=None):
+        
+        old_size = image.shape[:2] 
+        old_ratio = old_size[0]/old_size[1]
+        #print(old_ratio)#0.5625
+        new_height = old_size[0]
+        new_width = old_size[1]
+        #print(new_height)#540
+        if old_ratio > 0.75:
+            new_width = int(new_height * 4/3)
+            #print(new_height,new_width)
+            
+        elif old_ratio < 0.75:
+            new_height = int(new_width*3/4)
+        
+        #im = cv2.resize(im, (new_width, new_height))
+        #boxes = [244,449,198,91]
+        delta_h = new_height - old_size[0]
+        delta_w = new_width - old_size[1]
+        top, bottom = delta_h//2, delta_h-(delta_h//2)
+        left, right = delta_w//2, delta_w-(delta_w//2)
+        #print('delta w', delta_w)
+        #print('delta h', delta_h)        
+        #boxes = np.array([[296. , 85., 364., 123.]])
+        #print('before',boxes)
+        boxes[:, 0] =  int(delta_w/2) + boxes[:, 0]
+        boxes[:, 2] = int(delta_w/2) + boxes[:, 2] 
+        boxes[:, 1] = int(delta_h/2) + boxes[:, 1] 
+        boxes[:, 3] = int(delta_h/2) + boxes[:, 3] 
+        #print('after',boxes)
+        color = [0, 0, 0]
+        new_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT,
+            value=color) 
+        
+        #print(boxes)
 
+        #print(new_image.shape)
+        #start_point = (int(boxes[0,0]),int(boxes[0,1]))
+        #end_point = (int(boxes[0,0]+boxes[0,2]),int(boxes[0,1]+boxes[0,3]))
+        #cv2.rectangle(new_image, start_point, end_point, [0,0,0], 2) 
+        #cv2.imshow("image", new_image)
+        #cv2.waitKey(0)
+        #cv2.destroyAllWindows()
+        return new_image, boxes, labels    
+    
+class Padding(object):
+    def _init_(self, ratio = 0.75):
+        self.ratio = ratio
+    def __call__(self,image, boxes = None, labels=None):
+        old_size = image.shape[:2] 
+        old_ratio = old_size[0]/old_size[1]
+        #print(old_ratio)#0.5625
+        new_height = old_size[0]
+        new_width = old_size[1]
+        #print(new_height)#540
+        if old_ratio > 0.75:
+            new_width = int(new_height * 4/3)
+            #print(new_height,new_width)
+            
+        elif old_ratio < 0.75:
+            new_height = int(new_width*3/4)
+        
+        #im = cv2.resize(im, (new_width, new_height))
+            
+        delta_h = new_height - old_size[0]
+        delta_w = new_width - old_size[1]
+        top, bottom = delta_h//2, delta_h-(delta_h//2)
+        left, right = delta_w//2, delta_w-(delta_w//2)
+        #boxes = np.array(
+        #[[244., 449., 198., 91.],
+        #[ 865., 315.,  51. ,34.]]
+        #)
+        
+        #print('delta h', delta_h)
+        #print('before',boxes[:,1])
+        #boxes[:, 0] =  int(delta_w/2) + boxes[:, 0]
+        #boxes[:, 2] = int(delta_w/2) + boxes[:, 2] 
+        #boxes[:, 1] = int(delta_h/2) + boxes[:, 1] 
+        #boxes[:, 3] = int(delta_h/2) + boxes[:, 3] 
+        #print('after',boxes[:,1])
+        #start_point = (int(boxes[0,0]),int(boxes[0,1]))
+        #end_point = (int(boxes[0,0]+boxes[0,2]),int(boxes[0,1]+boxes[0,3]))
+        color = [0, 0, 0]
+        new_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT,
+            value=color) 
+        
+        #cv2.rectangle(new_image, start_point, end_point, color, 2) 
+        #cv2.imshow("image", new_image)
+        #cv2.waitKey(0)
+        #cv2.destroyAllWindows()
+        return new_image, boxes, labels       
 class Resize(object):
     def __init__(self, size=300):
         self.size = size

@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/media/ducanh/DATA/tienln/ai_camera/ai_camera_detector/')
+sys.path.append('/home/quannm/Documents/code/TinyMBSSD_Vehicle/')
 from utils.misc import str2bool, Timer, freeze_net_layers, store_labels
 from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR
 import os
@@ -7,19 +7,12 @@ import logging
 import sys
 import itertools
 import torch
-from torchscope import scope
-from torchsummary import summary
+#from torchscope import scope
+#from torchsummary import summary
 from utils.loss import MultiboxLoss, FocalLoss
 from utils.argument import _argument
 from train import train, test, data_loader, create_network
-from model.mb_ssd_lite_f38 import create_mb_ssd_lite_f38
-from model.config import mb_ssd_lite_f38_config
-
-from model.mb_ssd_lite_f38_person import create_mb_ssd_lite_f38_person
-from model.config import mb_ssd_lite_f38_person_config
-
-from model.mb_ssd_lite_f19 import create_mb_ssd_lite_f19
-from model.config import mb_ssd_lite_f19_config
+from torch.utils.tensorboard import SummaryWriter
 from model.rfb_tiny_mb_ssd import create_rfb_tiny_mb_ssd
 from model.config import rfb_tiny_mb_ssd_config
 
@@ -41,21 +34,12 @@ class Train():
         timer = Timer()
         logging.info(self.args)
         
-        if self.args.net == 'mb2-ssd-lite_f19':
-            create_net = create_mb_ssd_lite_f19
-            config =  mb_ssd_lite_f19_config
-        elif self.args.net == 'mb2-ssd-lite_f38':
-            create_net = create_mb_ssd_lite_f38
-            config = mb_ssd_lite_f38_config
-        elif self.args.net == 'mb2-ssd-lite_f38_person':
-            create_net = create_mb_ssd_lite_f38_person
-            config = mb_ssd_lite_f38_person_config
-        elif self.args.net == 'rfb_tiny_mb2_ssd':
+        if self.args.net == 'rfb_tiny_mb2_ssd':
             create_net = create_rfb_tiny_mb_ssd
             config = rfb_tiny_mb_ssd_config
         else:
             logging.fatal("The net type is wrong.")
-            parser.print_help(sys.stderr)
+            #parser.print_help(sys.stderr)
             sys.exit(1)
 
         train_loader,val_loader, num_classes = data_loader(config)
@@ -65,12 +49,15 @@ class Train():
 
     def training (self):
         print(self.dir_path)
+        writer = SummaryWriter()
         for epoch in range(0, self.args.num_epochs):
             self.scheduler.step()
             training_loss = train(self.train_loader, self.net, self.criterion, self.optimizer, device=self.device, debug_steps=self.args.debug_steps, epoch=epoch)
+            writer.add_scalar('model/train_loss', training_loss, epoch)
             if epoch % self.args.validation_epochs == 0 or epoch == self.args.num_epochs - 1:
                 if self.args.valid:
                     val_running_loss, val_running_regression_loss, val_running_classification_loss = test(self.val_loader,self.net,self.criterion,device=self.device)
+                    writer.add_scalar('model/val_losss', val_running_loss, epoch)
                     logging.info(
                         f"Epoch: {epoch}, " +
                         f"val_avg_loss: {val_running_loss:.4f}, " +

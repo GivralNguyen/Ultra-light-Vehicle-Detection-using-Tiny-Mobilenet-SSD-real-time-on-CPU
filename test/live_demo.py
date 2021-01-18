@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/media/ducanh/DATA/tienln/ai_camera/ai_camera_detector')
+sys.path.append('/home/quannm/Documents/code/TinyMBSSD_Vehicle/')
 from model.mb_ssd_lite_f19 import create_mb_ssd_lite_f19, create_mb_ssd_lite_f19_predictor
 from model.mb_ssd_lite_f38 import create_mb_ssd_lite_f38, create_mb_ssd_lite_f38_predictor
 from model.rfb_tiny_mb_ssd import create_rfb_tiny_mb_ssd, create_rfb_tiny_mb_ssd_predictor
