@@ -83,6 +83,7 @@ python train.py, type_network rfb_tiny_mb2_ssd, setting base_channel = 64 with v
 * 0.032s (Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz) - 30 FPS.
 ## Model result 
 * Tested on 10000 random DETRAC test set images 
+
 |  STT  |         Model         | Confidence | DT_Box | AP(car) | MR(car) | AP(bus) | MR(bus) | AP(van) | MR(van) |  mAP   | mFPPI | Processing time |
 | :---: | :-------------------: | :--------: | :----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :----: | :---: | :-------------: |
 |   1   | tiny_Mb2-SSD-Lite     |    0.5     | 73304  | 62.92%  | 36.38%  | 77.64%  | 21.46%  | 55.78%  | 42.61%  | 67.14% |       |                 |
