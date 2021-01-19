@@ -81,8 +81,12 @@ python train.py, type_network rfb_tiny_mb2_ssd, setting base_channel = 64 with v
 * Madds size (GB): 2.83
 ## Model runtime : 
 * 0.032s (Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz) - 30 FPS.
-## TODO 
-* Model benchmark 
+## Model result 
+* Tested on 10000 random DETRAC test set images 
+* AP(car) | MR(car) | AP(bus) | MR(bus) | AP(van)| MR(van)| mAP   | Processing time
+* 62.92%   36.38%      77.64%    21.46%   55.78%   42.61%  67.14%      0.032s 
+
+0.05s
 ## Run inference : 
 * Run test/detect_imgs.py. Change the corresponding argument . If ModuleNotFoundError: No module named 'model', change the path to sys.path.append() to current TinyMBSSD_Vehicle/ folder.
 ## Train 
