@@ -1,6 +1,6 @@
 # Ultra-light Vehicle Detection using Tiny-Mobilenet + SSD (real time on CPU)
 
-![This is a alt text.](/detect_results/dongkinhnghiathuc.jpg "This is a sample image.")
+![This is a alt text.](/dongkinhnghiathuc.jpg "This is a sample image.")
 
 # Model 
 * The person detection model based on SSD architecture
